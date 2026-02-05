@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaflet Esri Map</title>
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+    <!-- CartoGraticule Plugin CSS -->
+    <link rel="stylesheet" href="Leaflet.CartoGraticule.css">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: white;
+            /* Ensure white background for map margins */
+        }
+
+        #map {
+            height: 100vh;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="map"></div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <!-- CartoGraticule Plugin JS -->
+    <script src="Leaflet.CartoGraticule.js"></script>
+
+    <script>
+        // 初始化地图，设置中心点和缩放级别
+        var map = L.map('map').setView([36.0671, 120.3826], 13); // 以青岛为例
+
+        // 定义 Esri 瓦片图层
+
+        // 1. Esri World Street Map (街道图)
+        var esriStreets = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+            attribution: 'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012'
+        });
+
+        // 2. Esri World Imagery (卫星图)
+        var esriImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+            attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+        });
+
+        // 3. Esri World Topo Map (地形图)
+        var esriTopo = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}', {
+            attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community'
+        });
+
+        // 默认添加影像图
+        esriImagery.addTo(map);
+
+        // 添加图层控制
+        var baseMaps = {
+            "Streets": esriStreets,
+            "Imagery": esriImagery,
+            "Topographic": esriTopo
+        };
+
+        L.control.layers(baseMaps).addTo(map);
+
+        // 添加坐标制图插件
+        L.control.cartoGraticule({
+            position: 'topleft',
+            fontSize: 15,       // 设置经纬度标签字体大小
+            tickDirection: 'out', // 设置经纬度刻度方向 'in' 或 'out'
+            showZoomControl: false, // 制图模式下是否显示缩放控件
+            targetN: {  // 设置 targetN
+                lng: 3.2, // 期望的经度标签数量,越大越多
+                lat: 1.9  // 期望的纬度标签数量,越大越多
+            },
+            mapStyle: { // 设置制图模式边距
+                top: '40px',
+                bottom: '40px',
+                left: '50px',
+                right: '100px'
+            }
+        }).addTo(map);
+    </script>
+</body>
+
+</html>
