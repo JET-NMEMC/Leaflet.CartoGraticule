@@ -58,6 +58,8 @@ Leaflet.CartoGraticule 是一个轻量级的 Leaflet 插件，旨在为地图添
 
 ## 示例 (Example)
 
+[在线演示 (Online Demo)](https://jet-nmemc.github.io/Leaflet.CartoGraticule/index.html)
+
 查看 `index.html` 获取完整的运行示例。
 
 ```javascript
